@@ -9,26 +9,15 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Navigator from './utils/Navigator';
+import {NavigationContainer} from '@react-navigation/native';
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.safeView}>
-      <Icon name="lamp" size={50} color="black" style={styles.icon} />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Navigator />
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  safeView: {
-    padding: 20,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  icon: {
-    alignSelf: 'center',
-  },
-});
 
 export default App;
