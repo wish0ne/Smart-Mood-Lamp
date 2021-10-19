@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500',
     textAlign: 'center',
     lineHeight: 30,
