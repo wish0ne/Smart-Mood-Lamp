@@ -34,23 +34,24 @@ const styles = StyleSheet.create({
   writeBtn: {
     width: '100%',
     alignItems: 'center',
-    borderWidth: 1,
     borderRadius: 5,
     height: 50,
     justifyContent: 'center',
     marginBottom: 10,
+    backgroundColor: 'black',
   },
   readBtn: {
     width: '100%',
     alignItems: 'center',
-    borderWidth: 1,
     borderRadius: 5,
     height: 50,
     justifyContent: 'center',
+    backgroundColor: 'black',
   },
   text: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'white',
   },
 });
 

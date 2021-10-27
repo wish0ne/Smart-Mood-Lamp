@@ -1,11 +1,25 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {WriteTextProps} from '../utils/Navigator';
 import {NavigationHeader} from '../components/Header';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {getDBconnection, saveDiary} from '../utils/DB';
 
 const WriteText = ({navigation, route}: WriteTextProps) => {
+  const [diary, setDiary] = useState<string>('');
+
+  const addDiary = async (date: string, text: string) => {
+    try {
+      console.log(date);
+      const db = await getDBconnection();
+      await saveDiary(db, date, text, '');
+      console.log('diary save 성공');
+      navigation.navigate('Result');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <SafeAreaView style={styles.safeView}>
       <NavigationHeader
@@ -21,10 +35,15 @@ const WriteText = ({navigation, route}: WriteTextProps) => {
         style={styles.textInput}
         placeholder={'일기를 작성해 주세요'}
         multiline
+        onChangeText={text => {
+          setDiary(text);
+        }}
       />
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate('Result')}>
+        onPress={() => {
+          addDiary(route.params.day, diary);
+        }}>
         <Text style={styles.btnText}>감정 분석하기</Text>
       </TouchableOpacity>
     </SafeAreaView>

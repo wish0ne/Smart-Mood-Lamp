@@ -13,7 +13,7 @@ type StackParamList = {
   Write: undefined;
   WriteText: {day: string};
   Result: undefined;
-  ReadText: {day: string};
+  ReadText: {day: string; diary: string};
 };
 
 const Stack = createStackNavigator<StackParamList>();

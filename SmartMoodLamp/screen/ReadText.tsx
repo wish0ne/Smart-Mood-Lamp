@@ -13,6 +13,7 @@ const ReadText = ({navigation, route}: ReadTextProps) => {
         title={'일기 확인'}
       />
       <Text>{route.params.day}</Text>
+      <Text>{route.params.diary}</Text>
     </SafeAreaView>
   );
 };
