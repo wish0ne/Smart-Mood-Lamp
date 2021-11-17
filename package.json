@@ -1,0 +1,22 @@
+{
+  "name": "smart-mood-lamp",
+  "version": "1.0.0",
+  "description": "2021-2학기 최신기술프로젝트2 IoT 프로젝트",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wish1030/Smart-Mood-Lamp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wish1030/Smart-Mood-Lamp/issues"
+  },
+  "homepage": "https://github.com/wish1030/Smart-Mood-Lamp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
