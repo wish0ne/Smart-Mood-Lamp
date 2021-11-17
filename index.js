@@ -13,16 +13,16 @@ app.get("/", (req, res) => {
 app.post("/api/analysis", (req,res) => {
         // analysis로, body로 emotion 보내면 된다. 단, json 형식으로.
 
-        var userBuffer = fs.readFileSync('./storage/user_data.json');
-        var userJSON = userBuffer.toString();
-        var userData = JSON.parse(userJSON)
+        //var userBuffer = fs.readFileSync('./storage/user_data.json');
+        //var userJSON = userBuffer.toString();
+        //var userData = JSON.parse(userJSON)
 
         var emotion = req.body;
 
         var emotionJSON = JSON.stringify(emotion);
         var parsedData = JSON.parse(emotionJSON);//detailjson.negative 같이 거름
 
-        fs.writeFileSync('./storage/analysis/${userData.current_number}.json', emotionJSON);
+        //fs.writeFileSync('./storage/analysis/${userData.current_number}.json', emotionJSON);
 
         res.send('node server received emotion');
 });
@@ -30,22 +30,22 @@ app.post("/api/analysis", (req,res) => {
 app.post("/api/text", (req,res) => {
         // "text" : 텍스트 형식으로.
         var text = req.body;
-        var userBuffer = fs.readFileSync('./storage/user_data.json');
-        var userJSON = userBuffer.toString();
-        var userData = JSON.parse(userJSON)
+        //var userBuffer = fs.readFileSync('./storage/user_data.json');
+        //var userJSON = userBuffer.toString();
+        //var userData = JSON.parse(userJSON)
 
-        userData.current_number += 1;
+        //userData.current_number += 1;
 
- 	    var newJSON = JSON.stringify(userData);
-        fs.writeFileSync('./storage/user_data.json', newJSON);
+ 	    //var newJSON = JSON.stringify(userData);
+        //fs.writeFileSync('./storage/user_data.json', newJSON);
         // user number update
 
         var textJSON = JSON.stringify(text);
         var parsedData = JSON.parse(textJSON);
-        fs.writeFileSync('./storage/texts/${userData.current_number}.json');
+        //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
 
         //callback으로 flask에 정보요청
-        res.send("node server received text");
+        res.send({"text":parsedData.text});
 });
 
 
@@ -60,9 +60,9 @@ app.delete("/api/text/exist", (req,res)=>{
 
 app.post("/api/analysis/detail", (req,res) => {
 
-        var userBuffer = fs.readFileSync('./storage/user_data.json');
-        var userJSON = userBuffer.toString();
-        var userData = JSON.parse(userJSON)
+        //var userBuffer = fs.readFileSync('./storage/user_data.json');
+        //var userJSON = userBuffer.toString();
+        //var userData = JSON.parse(userJSON)
 
         var detail = req.body; //json 파일으로 받는다.
         //var emotion = req.body.emotion;
@@ -72,7 +72,7 @@ app.post("/api/analysis/detail", (req,res) => {
         var detailJSON = JSON.stringify(detail);
         var parsedData = JSON.parse(detailJSON);//detailjson.negative 같이 거름
 
-        fs.writeFileSync('./storage/analysis_detail/${userData.current_number}.json', detailJSON);
+        //fs.writeFileSync('./storage/analysis_detail/${userData.current_number}.json', detailJSON);
         res.send("node server received analysis detail");
 });
 
