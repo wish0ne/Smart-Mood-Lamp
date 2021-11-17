@@ -82,12 +82,15 @@ const {Server} = require('socket.io');
 const socketServer = (server, app) => {
 	try{
 		const io = new Server(server,{path:"/socket.io"});
-	app.set("io", io);
-	io.on("connection", (socket) => {
-		console.log("good");
-		socket.join(1);
-		socket.to(1).emit("my message", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
-	});
+		app.set("io", io);
+		io.on("connection", (socket) => {
+			console.log("good");
+			socket.join(1);
+		});
+		io.on("getsentiments", (socket) =>{
+			console.log("good");
+			socket.to(1).emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+		});
 	}
 	catch(e){
 		console.error(e);
