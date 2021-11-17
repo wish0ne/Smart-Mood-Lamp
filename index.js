@@ -80,13 +80,18 @@ app.post("/api/analysis/detail", (req,res) => {
 const {Server} = require('socket.io');
 
 const socketServer = (server, app) => {
-	const io = new Server(server,{path:"/socket.io"});
+	try{
+		const io = new Server(server,{path:"/socket.io"});
 	app.set("io", io);
-	io.on("connection", () => {
+	io.on("connection", (socket) => {
 		console.log("good");
 		socket.join(1);
-		socket.to(1).emit("mymessage", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+		socket.to(1).emit("my message", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
 	});
+	}
+	catch(e){
+		console.error(e);
+	}
 };
 
 const http = require('http');
