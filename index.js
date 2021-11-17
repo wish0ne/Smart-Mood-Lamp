@@ -45,32 +45,6 @@ app.post("/api/text", (req,res) => {
         fs.writeFileSync('./storage/texts/${userData.current_number}.json');
 
         //callback으로 flask에 정보요청
-
-        var flaskResult = (callback)=>{
-                const options = {
-                        method: 'POST',
-                        uri: "http://127.0.0.1:5000/test",
-                        qs: {
-                                "text": parsedData.text;
-                        }
-                }
-
-                request(options, function (err,res,body) {
-                        callback(undefined, {result:body});
-                });
-        }
-
-        flaskResult((err, {result}={})=>{
-                if(err){
-                        console.log("flaks error!!!");
-                        res.send({
-                                message:"fail",
-                                status:"fail",
-                        });
-                }
-                var
-        }
-
         res.send("node server received text");
 });
 
