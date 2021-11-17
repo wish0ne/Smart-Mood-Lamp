@@ -3,7 +3,7 @@ var app = express();
 var fs = require('fs');
 var request = require('request');
 
-app.use(express.json()); //웹서버응답
+app.use(express.json()); //웹 서버 응답
 app.use(express.urlencoded({extended:true}));
 
 app.get("/", (req, res) => {
@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/analysis", (req,res) => {
-        // analysis로, body로 emotion 보내면 된다. 단, json 형식으로.
+        //analysis로, body로 emotion 보내면 된다. 단, json 형식으로.
 
         //var userBuffer = fs.readFileSync('./storage/user_data.json');
         //var userJSON = userBuffer.toString();
@@ -28,7 +28,7 @@ app.post("/api/analysis", (req,res) => {
 });
 	  
 app.post("/api/text", (req,res) => {
-        // "text" : 텍스트 형식으로.
+        //"text" : 텍스트 형식으로.
         var text = req.body;
         //var userBuffer = fs.readFileSync('./storage/user_data.json');
         //var userJSON = userBuffer.toString();
@@ -76,6 +76,25 @@ app.post("/api/analysis/detail", (req,res) => {
         res.send("node server received analysis detail");
 });
 
-app.listen(3000, () => {
+
+const {Server = require('socket.io')};
+
+const socketServer = (server, app) => {
+	const io = new Server(server,{path:"/socket.io"});
+	app.set("io", io);
+	io.of("raspberrypi").on("connection", () => {
+		console.log("good");
+		socket.join(1);
+		socket.to(1).emit("mymessage", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+	});
+});
+
+const http = require('http');
+
+const server = http.createServer(app);
+
+socketServer(server, app);
+
+server.listen(3000, () => {
         console.log('App is listening 3000 port');
 });
