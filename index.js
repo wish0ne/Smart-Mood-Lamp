@@ -84,11 +84,11 @@ const socketServer = (server, app) => {
 		const io = new Server(server,{path:"/socket.io"});
 		app.set("io", io);
 		io.on("connection", (socket) => {
-			console.log("good");
-			socket.join(1);
+			console.log("good_connection");
+			socket.emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
 		});
 		io.on("getsentiments", (socket) =>{
-			console.log("good");
+			console.log("good_sentiments");
 			socket.to(1).emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
 		});
 	}
