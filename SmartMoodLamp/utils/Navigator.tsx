@@ -12,7 +12,7 @@ type StackParamList = {
   Read: undefined;
   Write: undefined;
   WriteText: {day: string};
-  Result: undefined;
+  Result: {sentiments: number[]};
   ReadText: {day: string; diary: string};
 };
 

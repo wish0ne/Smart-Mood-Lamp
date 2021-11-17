@@ -1,13 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {WriteTextProps} from '../utils/Navigator';
 import {NavigationHeader} from '../components/Header';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getDBconnection, saveDiary} from '../utils/DB';
+import axios from 'axios';
 
 const WriteText = ({navigation, route}: WriteTextProps) => {
   const [diary, setDiary] = useState<string>('');
+  const [sentiments, setSentiments] = useState<Array<number>>([]);
 
   const addDiary = async (date: string, text: string) => {
     try {
@@ -15,11 +17,36 @@ const WriteText = ({navigation, route}: WriteTextProps) => {
       const db = await getDBconnection();
       await saveDiary(db, date, text, '');
       console.log('diary save 성공');
-      navigation.navigate('Result');
+      fetchText();
     } catch (error) {
       console.error(error);
     }
   };
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      // Your useEffect code here to be run on update
+      navigation.navigate('Result', {sentiments: sentiments});
+      console.log(sentiments);
+    }
+  }, [sentiments, navigation]);
+
+  //작성한 text 전송
+  const fetchText = async () => {
+    try {
+      const res = await axios.post('http://54.172.94.216:3000/api/text', {
+        text: diary,
+      });
+      setSentiments(res.data.sentiments);
+      console.log(sentiments);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeView}>
       <NavigationHeader
