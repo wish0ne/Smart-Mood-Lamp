@@ -33,7 +33,7 @@ app.post("/api/text", (req,res) => {
 		const io = req.app.get("io");
 		
 		var sentimentsArr = new Array(10);
-		arr.splice(0, 0, 0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9);
+		sentimentsArr.splice(0, 0, 0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9);
 		
 		io.emit("getsentiments", {"sentiments":sentimentsArr});
         res.send({"sentiments":sentimentsArr});
