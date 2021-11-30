@@ -48,7 +48,7 @@ app.post("/api/text", (req,res) => {
         //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
 		console.log("success");
         //callback으로 flask에 정보요청
-		const io = req.app.io;
+		const io = req.app.get("io");
 		io.emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
         res.send({"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
 });
