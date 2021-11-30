@@ -25,7 +25,6 @@ app.post("/api/text", (req,res) => {
 
         var textJSON = JSON.stringify(text);
         var parsedData = JSON.parse(textJSON);
-		console.log(parsedData);
 		console.log("--------");
 		console.log(textJSON);
         //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
@@ -33,10 +32,11 @@ app.post("/api/text", (req,res) => {
         //callback으로 flask에 정보요청
 		const io = req.app.get("io");
 		
-		//
+		var sentimentsArr = new Array(10);
+		arr.splice(0, 0, 0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9);
 		
-		io.emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
-        res.send({"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+		io.emit("getsentiments", {"sentiments":sentimentsArr});
+        res.send({"sentiments":sentimentsArr});
 });
 
 
