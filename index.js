@@ -42,6 +42,9 @@ app.post("/api/text", (req,res) => {
 
         var textJSON = JSON.stringify(text);
         var parsedData = JSON.parse(textJSON);
+		console.log(parsedData);
+		console.log("--------");
+		console.log(textJSON);
         //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
 		console.log("success");
         //callback으로 flask에 정보요청
