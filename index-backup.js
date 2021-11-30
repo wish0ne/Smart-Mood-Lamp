@@ -57,7 +57,6 @@ const socketServer = (server, app) => {
 		app.set("io", io);
 		io.on("connection", (socket) => {
 			console.log("good_connection");
-			socket.emit("connect", {status: "good"});
 		});
 	}
 	catch(e){
