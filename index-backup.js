@@ -10,30 +10,6 @@ app.get("/", (req, res) => {
         res.send('Hello world\n')
 });
 
-const {Server} = require('socket.io');
-
-const socketServer = (server, app) => {
-	try{
-		const io = new Server(server,{path:"/socket.io"});
-		app.set("io", io);
-		io.on("connection", (socket) => {
-			console.log("good_connection");
-			socket.emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
-		});
-		io.on("getsentiments", (socket) =>{
-			console.log("good_sentiments");
-			socket.to(1).emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
-		});
-	}
-	catch(e){
-		console.error(e);
-	}
-};
-
-const http = require('http');
-
-const server = http.createServer(app);
-
 app.post("/api/analysis", (req,res) => {
         //analysis로, body로 emotion 보내면 된다. 단, json 형식으로.
 
@@ -70,13 +46,8 @@ app.post("/api/text", (req,res) => {
 		console.log("--------");
 		console.log(textJSON);
         //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
-		console.log("json success");
+		console.log("success");
         //callback으로 flask에 정보요청
-		
-		socketServer(server, app);
-		
-		console.log("socket success");
-		
         res.send({"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
 });
 
@@ -107,6 +78,33 @@ app.post("/api/analysis/detail", (req,res) => {
         //fs.writeFileSync('./storage/analysis_detail/${userData.current_number}.json', detailJSON);
         res.send("node server received analysis detail");
 });
+
+
+const {Server} = require('socket.io');
+
+const socketServer = (server, app) => {
+	try{
+		const io = new Server(server,{path:"/socket.io"});
+		app.set("io", io);
+		io.on("connection", (socket) => {
+			console.log("good_connection");
+			socket.emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+		});
+		io.on("getsentiments", (socket) =>{
+			console.log("good_sentiments");
+			socket.to(1).emit("getsentiments", {"sentiments":[0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9]});
+		});
+	}
+	catch(e){
+		console.error(e);
+	}
+};
+
+const http = require('http');
+
+const server = http.createServer(app);
+
+socketServer(server, app);
 
 server.listen(3000, () => {
         console.log('App is listening 3000 port');
