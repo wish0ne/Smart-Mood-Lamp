@@ -36,13 +36,28 @@ export const getDiaryItem = async (
       `SELECT date, text, result FROM ${tableName} WHERE date = ${date}`,
     );
     console.log(result[0].rows.item(result[0].rows.length - 1));
-    // results.forEach(result => {
-    //   for (let index = 0; index < result.rows.length; index++) {
-    //     diaryItems.push(result.rows.item(index));
-    //   }
-    // });
     diaryItem = result[0].rows.item(result[0].rows.length - 1).text;
     return diaryItem;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get items !!!');
+  }
+};
+
+export const getDiaryItems = async (db: SQLiteDatabase): Promise<string[]> => {
+  try {
+    let diaryItems: string[] = [];
+    const results = await db.executeSql(
+      `SELECT date, text, result FROM ${tableName}`,
+    );
+    if (results) {
+      results.forEach(result => {
+        for (let index = 0; index < result.rows.length; index++) {
+          diaryItems.push(result.rows.item(index));
+        }
+      });
+    }
+    return diaryItems;
   } catch (error) {
     console.error(error);
     throw Error('Failed to get items !!!');

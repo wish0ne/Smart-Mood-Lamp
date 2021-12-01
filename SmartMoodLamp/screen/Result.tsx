@@ -5,6 +5,8 @@ import {ResultProps} from '../utils/Navigator';
 import {NavigationHeader} from '../components/Header';
 import {BarChart} from 'react-native-chart-kit';
 
+//감정 결과 : 0~1 사이 소수. 0.2단위로 구분
+
 const Result = ({navigation, route}: ResultProps) => {
   let labelArr: string[] = [];
   const [sentiments, setSentiments] = useState<Array<number>>(

@@ -8,11 +8,21 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import Navigator from './utils/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
+import SplashScreen from 'react-native-splash-screen';
+import {StatusBar} from 'react-native';
 
 const App = () => {
+  StatusBar.setBackgroundColor('transparent');
+  StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <NavigationContainer>
       <Navigator />

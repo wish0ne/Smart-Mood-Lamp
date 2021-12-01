@@ -1,23 +1,19 @@
 import React from 'react';
 import type {FC} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {View, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export type NavigationHeaderProps = {
-  title?: string;
-  goBack: () => void;
-};
+// export type NavigationHeaderProps = {
+//   title?: string;
+//   goBack: () => void;
+// };
 
-export const NavigationHeader: FC<NavigationHeaderProps> = ({
-  title,
-  goBack,
-}) => {
+export const NavigationHeader: FC = ({}) => {
   return (
     <View style={[styles.view]}>
-      <TouchableOpacity onPress={() => goBack()}>
-        <Icon name="ios-chevron-back" size={30} />
-      </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
+      <Icon name="emoticon-happy" size={30} color="black" />
+      <Icon name="emoticon-neutral" size={30} color="black" />
+      <Icon name="emoticon-sad" size={30} color="black" />
     </View>
   );
 };
@@ -26,14 +22,11 @@ const styles = StyleSheet.create({
   view: {
     width: '100%',
     flexDirection: 'row',
-    marginBottom: 30,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    marginTop: 25,
+    borderBottomWidth: 2,
+    paddingBottom: 10,
+    borderBottomColor: 'rgba(73, 84, 100, 0.3)',
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
-    lineHeight: 30,
-    marginLeft: 10,
-  },
-  flex: {flex: 1, backgroundColor: 'transparent'},
 });
