@@ -20,7 +20,7 @@ export const getDBconnection = async () => {
 export const createTable = async (db: SQLiteDatabase) => {
   // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-          date TEXT UNIQUE NOT NULL, text TEXT NOT NULL, result TEXT NOT NULL
+    date TEXT UNIQUE NOT NULL, text TEXT NOT NULL, result TEXT NOT NULL
       );`;
 
   await db.executeSql(query);
@@ -29,14 +29,17 @@ export const createTable = async (db: SQLiteDatabase) => {
 export const getDiaryItem = async (
   db: SQLiteDatabase,
   date: string,
-): Promise<string | null> => {
+): Promise<string> => {
   try {
-    let diaryItem: string | null = null;
+    let diaryItem: string = '';
     const result = await db.executeSql(
-      `SELECT date, text, result FROM ${tableName} WHERE date = ${date}`,
+      `SELECT date, text, result FROM ${tableName} WHERE date = '${date}'`,
     );
-    console.log(result[0].rows.item(result[0].rows.length - 1));
-    diaryItem = result[0].rows.item(result[0].rows.length - 1).text;
+    if (result[0].rows.length !== 0) {
+      diaryItem = result[0].rows.item(0).text;
+    } else {
+      diaryItem = '작성된 일기가 없습니다.';
+    }
     return diaryItem;
   } catch (error) {
     console.error(error);
@@ -44,9 +47,11 @@ export const getDiaryItem = async (
   }
 };
 
-export const getDiaryItems = async (db: SQLiteDatabase): Promise<string[]> => {
+export const getDiaryItems = async (
+  db: SQLiteDatabase,
+): Promise<DiaryItem[]> => {
   try {
-    let diaryItems: string[] = [];
+    let diaryItems: DiaryItem[] = [];
     const results = await db.executeSql(
       `SELECT date, text, result FROM ${tableName}`,
     );
@@ -72,8 +77,9 @@ export const saveDiary = async (
 ) => {
   const insertQuery =
     `INSERT OR REPLACE INTO ${tableName}(date, text, result) values` +
-    `(${date}, '${text}', '${result}')`;
+    `('${date}', '${text}', '${result}')`;
 
+  console.log(insertQuery);
   return db.executeSql(insertQuery);
 };
 

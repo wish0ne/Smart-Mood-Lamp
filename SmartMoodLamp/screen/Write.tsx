@@ -19,6 +19,7 @@ const Write = ({navigation, route}: WriteProps) => {
   const addDiary = async (date: string, text: string) => {
     try {
       console.log(date);
+      console.log(typeof date);
       const db = await getDBconnection();
       await saveDiary(db, date, text, '');
       console.log('diary save 성공');
@@ -55,7 +56,7 @@ const Write = ({navigation, route}: WriteProps) => {
     }
   };
 
-  const day = route.params.day.split('-').join('.');
+  const day: string = route.params.day.split('-').join('.');
 
   return (
     <SafeAreaView style={styles.safeView}>

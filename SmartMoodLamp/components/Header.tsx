@@ -3,11 +3,6 @@ import type {FC} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// export type NavigationHeaderProps = {
-//   title?: string;
-//   goBack: () => void;
-// };
-
 export const NavigationHeader: FC = ({}) => {
   return (
     <View style={[styles.view]}>
