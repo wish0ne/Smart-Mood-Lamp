@@ -19,7 +19,6 @@ const Write = ({navigation, route}: WriteProps) => {
   const addDiary = async (date: string, text: string) => {
     try {
       console.log(date);
-      console.log(typeof date);
       const db = await getDBconnection();
       await saveDiary(db, date, text, '');
       console.log('diary save 성공');
@@ -39,7 +38,6 @@ const Write = ({navigation, route}: WriteProps) => {
         day: route.params.day,
         sentiments: sentiments,
       });
-      console.log(sentiments);
     }
   }, [sentiments, navigation, route.params.day]);
 
