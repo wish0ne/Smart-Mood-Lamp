@@ -44,6 +44,7 @@ const Write = ({navigation, route}: WriteProps) => {
   //작성한 text 전송
   const fetchText = async () => {
     try {
+      console.log('fetch');
       const res = await axios.post('http://54.172.94.216:3000/api/text', {
         text: diary,
       });
@@ -93,7 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   day: {
-    //marginTop: 10,
     alignItems: 'center',
     marginBottom: 20,
   },
