@@ -16,7 +16,7 @@ app.engine('html', require('ejs').renderFile);
 app.use(express.json());
 app.use(cors({origin: "*"}));
 app.use(express.urlencoded({extended: true}));
-app.post("/user/getSentiment", async (req, res, next) => {
+app.post("/api/text", async (req, res, next) => {
     try {
         const {text} = req.body;
         const data = {"document": {"type": "PLAIN_TEXT", "content": text}, "encodingType": "UTF8"};
