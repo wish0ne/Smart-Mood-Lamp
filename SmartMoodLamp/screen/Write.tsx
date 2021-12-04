@@ -44,12 +44,10 @@ const Write = ({navigation, route}: WriteProps) => {
   //작성한 text 전송
   const fetchText = async () => {
     try {
-      console.log('fetch');
       const res = await axios.post('http://54.172.94.216:3000/api/text', {
         text: diary,
       });
       setSentiments(res.data.sentiments);
-      console.log(sentiments);
     } catch (e) {
       console.log(e);
     }
@@ -112,6 +110,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlignVertical: 'top',
     fontSize: 25,
+    color: 'black',
   },
   btn: {
     width: 70,
