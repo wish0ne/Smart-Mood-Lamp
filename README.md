@@ -1,2 +1,4 @@
-# Smart-Mood-Lamp
-2021-2학기 최신기술프로젝트2 IoT 프로젝트
+## 최기프2 서버
+
+1. .env 파일 생성 => PORT_NUMBER=포트번호 API_KEY=키
+3. npm run start

@@ -1,75 +1,65 @@
-var express = require('express');
-var app = express();
-var fs = require('fs');
-var request = require('request');
+const path = require('path');
+const express = require('express');
+const cors = require('cors');
+const createError = require('http-errors');
+const axios = require('axios');
+const dotenv = require('dotenv');
 
-app.use(express.json()); //웹 서버 응답
-app.use(express.urlencoded({extended:true}));
+// 환경변수
+dotenv.config();
 
-app.get("/", (req, res) => {
-        res.send('Hello world\n')
+// http 서버
+const app = express();
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+app.use(express.json());
+app.use(cors({origin: "*"}));
+app.use(express.urlencoded({extended: true}));
+app.post("/user/getSentiment", async (req, res, next) => {
+    try {
+        const {text} = req.body;
+        const data = {"document": {"type": "PLAIN_TEXT", "content": text}, "encodingType": "UTF8"};
+        const apiKey = process.env.API_KEY
+        const result = await axios.post(`https://language.googleapis.com/v1/documents:analyzeSentiment?key=${apiKey}`, data);
+        const sentiments = result.data.sentences.map(v => (v.sentiment.score + 1) / 2);
+        const io = req.app.get("io");
+        io.emit("getsentiments", {sentiments});
+        return res.json({sentiments});
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+app.use(function (req, res, next) {
+    next(createError(404));
+});
+app.use(function (err, req, res, next) {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });
 
-app.post("/api/text", (req,res) => {
-        //"text" : 텍스트 형식으로.
-        var text = req.body;
-        //var userBuffer = fs.readFileSync('./storage/user_data.json');
-        //var userJSON = userBuffer.toString();
-        //var userData = JSON.parse(userJSON)
-
-        //userData.current_number += 1;
-
- 	    //var newJSON = JSON.stringify(userData);
-        //fs.writeFileSync('./storage/user_data.json', newJSON);
-        // user number update
-
-        var textJSON = JSON.stringify(text);
-        var parsedData = JSON.parse(textJSON);
-		console.log("--------");
-		console.log(textJSON);
-        //fs.writeFileSync('./storage/texts/${userData.current_number}.json');
-		console.log("success");
-        //callback으로 flask에 정보요청
-		const io = req.app.get("io");
-		
-		var sentimentsArr = new Array();
-		sentimentsArr.splice(0, 0, 0.5,0.7,0.8,1.0,0.1,0.3,0.25,0.05,0.9);
-		
-		io.emit("getsentiments", {"sentiments":sentimentsArr});
-        res.send({"sentiments":sentimentsArr});
-});
-
-
-app.get("/api/text/exist", (req,res)=>{
-        var textid = req.query.textid;
-
-});
-
-app.delete("/api/text/exist", (req,res)=>{
-        var textid = req.query.textid;
-});
-
-const {Server} = require('socket.io');
-
+// 소켓 서버
+const {Server} = require("socket.io");
 const socketServer = (server, app) => {
-	try{
-		const io = new Server(server,{path:"/socket.io"});
-		app.set("io", io);
-		io.on("connection", (socket) => {
-			console.log("good_connection");
-		});
-	}
-	catch(e){
-		console.error(e);
-	}
+    try {
+        const io = new Server(server, {path: "/socket.io"});
+        app.set("io", io);
+        io.on("connection", () => {
+            console.log("connection from client checked!");
+        });
+    } catch (e) {
+        console.error(e);
+    }
 };
 
-const http = require('http');
-
+// 서버 시작
+const http = require("http");
 const server = http.createServer(app);
-
 socketServer(server, app);
-
-server.listen(3000, () => {
-        console.log('App is listening 3000 port');
+const portNumber = process.env.PORT_NUMBER
+server.listen(portNumber, () => {
+    console.log(`Server is listening at port number ${portNumber}`);
 });
